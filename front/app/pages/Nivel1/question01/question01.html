@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metacomprensión - Book Club - Nivel 1</title>
+    <link href="/question01.css" rel="stylesheet">
+</head>
+<body>
+    <section>
+        <h1>VAPEO</h1>        <p id="timerDisplay">Tiempo restante: <span id="timer">80</span> segundos</p>
+        <pre>
+1. La exposición aguda a la nicotina puede ser tóxica.
+2. Además de nicotina, el aerosol de los cigarrillos electrónicos puede contener sustancias
+   que le hacen daño al cuerpo.
+3. Los cigarrillos electrónicos vienen en muchas formas y tamaños. La mayoría de ellos tiene
+   una batería, un elemento que produce calor y un espacio para contener un líquido.
+4. Sin embargo, el aerosol de los cigarrillos electrónicos generalmente contiene menos
+   sustancias químicas dañinas que el humo que sale de los productos del tabaco quemado.
+5. Hay niños y adultos que se han intoxicado por tragar o inhalar el líquido de los cigarrillos
+   electrónicos, o por absorberlo a través de la piel o los ojos.
+        </pre>
+        <div class="image-container">
+            <img src="/brain.png" alt="A brain">
+        </div>
+        <form id="questionForm">
+            <input type="hidden" name="sublevel" value="1"> 
+            <input type="hidden" name="question" value="1">
+            <label><input id="3-2-1-5-4" type="radio" name="option" value="3-2-1-5-4"> 3-2-1-5-4</label>
+            <label><input id="1-2-4-5-3" type="radio" name="option" value="1-2-4-5-3"> 1-2-4-5-3</label>
+            <label><input id="3-2-4-1-5" type="radio" name="option" value="3-2-4-1-5"> 3-2-4-1-5</label>
+            <label><input id="2-3-4-5-1" type="radio" name="option" value="2-3-4-5-1"> 2-3-4-5-1</label>
+            <button type="submit">></button>
+        </form>
+
+    </section>
+    <button class="exit-button" onclick="exitPage()">Salir</button>
+
+    <script src="/respuestaUsuario.js"></script>
+</body>
+</html>

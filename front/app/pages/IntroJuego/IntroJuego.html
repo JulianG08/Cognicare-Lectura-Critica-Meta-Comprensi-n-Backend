@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metacomprensión - Book Club</title>
+    <link href="/IntoJuego.css" rel="stylesheet">
+</head>
+<body>
+    <h1>WELCOME</h1>
+    <img src="/brain.png" alt="A brain">
+    <section class="section">
+        <button class="link" data-level="1">01</button>
+        <button class="link" data-level="2">02</button>
+    </section>
+
+    <div id="statusMessage" class="status-message" style="display: none;"></div>
+
+    <script src="/IntroJuego.js"></script>
+    <button class="exit-button" onclick="exitPage()">Salir</button>
+    <script>
+        function exitPage() {
+            window.location.href = "/";
+        }
+    </script>
+</body>
+</html>

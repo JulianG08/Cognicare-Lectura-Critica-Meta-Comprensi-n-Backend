@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metacomprensión - Book Club - Nivel 1</title>
+    <link href="/question02L2.css" rel="stylesheet">
+</head>
+<body>
+    <section>
+        <h1>"EL MUNDO" DE "EL LIBRO DE LOS ABRAZOS", EDUARDO GALEANO</h1>
+        <pre><p id="timerDisplay">Tiempo restante: <span id="timer">80</span> segundos</p>
+            "Un hombre del pueblo de Neguá, en la costa de Colombia, pudo subir al alto cielo.
+            A la vuelta contó. Dije que había contemplado desde arriba, la vida humana.
+            Y dije que somos un mar de <span class="drop-zone" id="drop1" data-word="resplandece">___</span>.
+            - El mundo es eso - reveló - un montón de gente, un mar de <span class="drop-zone" id="drop2" data-word="intensidad">___</span>.
+            Cada persona <span class="drop-zone" id="drop3" data-word="lumbre">___</span> con luz propia entre todos los demás. No hay dos fuegos iguales. Hay fuegos
+            grandes y fuegos chicos y fuegos de todos los colores. Hay gente de fuego <span class="drop-zone" id="drop4" data-word="apacible">___</span>, que ni se entera del
+            viento, y gente de fuego loco que llena el aire de chispas. Algunos fuegos, fuegos bobos, no alumbran ni
+            queman; pero otros arden la vida con tanto <span class="drop-zone" id="drop5" data-word="ardor">___</span> que no se puede mirarlos sin parpadear, y quien se
+            acerca se enciende".
+        </pre>
+        <div class="image-container">
+            <img src="/brain.png" alt="A brain">
+        </div>
+        <input type="hidden" id="sublevel_id" value=3>
+        <input type="hidden" id="question_id" value=2>
+        <div id="word-container">
+            <!-- Palabras arrastrables -->
+            <div class="draggable" id="resplandece" draggable="true">Resplandece</div>
+            <div class="draggable" id="intensidad" draggable="true">Intensidad</div>
+            <div class="draggable" id="lumbre" draggable="true">Lumbre</div>
+            <div class="draggable" id="apacible" draggable="true">Apacible</div>
+            <div class="draggable" id="ardor" draggable="true">Ardor</div>
+        </div>
+        
+        <button id="submit-btn">Guardar Resultados</button>
+    </section>
+
+    <script src="/JuegoDD.js"></script>
+</body>
+</html>

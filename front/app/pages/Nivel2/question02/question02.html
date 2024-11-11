@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metacomprensión - Book Club - Nivel 2</title>
+    <link href="/question02L2.css" rel="stylesheet">
+</head>
+<body>
+    <section>
+        <h1>"LOS ÁRBOLES", FRANZ KAFKA</h1>
+        <pre><p id="timerDisplay">Tiempo restante: <span id="timer">60</span> segundos</p>
+            Pues somos como <span class="drop-zone" id="drop1" data-word="Troncos">___</span> de árbol en la nieve. 
+            Aparentemente yacen en un suelo <span class="drop-zone" id="drop2" data-word="Resbaladizo">___</span>, 
+            así que se podrían desplazar con un pequeño <span class="drop-zone" id="drop3" data-word="Empujon">___</span>. 
+            Pero no, no se puede, pues se hallan fuertemente <span class="drop-zone" id="drop4" data-word="Afianzados">___</span> al suelo. 
+            Aunque fíjate, incluso eso es aparente.
+        </pre>
+        <div class="image-container">
+            <img src="/brain.png" alt="A brain">
+        </div>
+        <input type="hidden" id="sublevel_id" value=4>
+        <input type="hidden" id="question_id" value=2>
+        <!-- Palabras arrastrables -->
+        <div id="word-container">
+            <div class="draggable" id="Troncos" draggable="true">Troncos</div>
+            <div class="draggable" id="Resbaladizo" draggable="true">Resbaladizo</div>
+            <div class="draggable" id="Empujon" draggable="true">Empujon</div>
+            <div class="draggable" id="Afianzados" draggable="true">Afianzados</div>
+        </div>
+
+        <!-- Botón para enviar resultados -->
+        <button id="submit-btn">Guardar Resultados</button>
+    </section>
+
+    <script src="/JuegoDD.js"></script>
+</body>
+</html>
