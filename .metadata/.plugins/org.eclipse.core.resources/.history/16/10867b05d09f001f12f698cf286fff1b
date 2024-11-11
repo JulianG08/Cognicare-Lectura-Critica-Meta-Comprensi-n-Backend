@@ -1,0 +1,21 @@
+package co.edu.uco.cognicare.lecturacritica.metacomprension;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+@SpringBootApplication
+@ComponentScan(basePackages = {
+	    "com.example.projectname.dto",       // Paquete DTO
+	    "com.example.projectname.model",     // Paquete Model
+	    "com.example.projectname.repository",// Paquete Repository
+	    "com.example.projectname.service",   // Paquete Service
+	    "com.example.projectname.util"
+	})
+public class CognicareLecturaCriticaApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CognicareLecturaCriticaApplication.class, args);
+	}
+
+}

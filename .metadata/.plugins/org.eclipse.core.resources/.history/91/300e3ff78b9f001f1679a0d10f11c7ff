@@ -1,0 +1,65 @@
+package co.edu.uco.cognicare.lecturacritica.metacomprension.service;
+
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import co.edu.uco.cognicare.lecturacritica.metacomprension.dto.ActivityAnswerDto;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.model.Activity;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.repository.QuestionRepository;
+
+@Service
+public class ActivityService {
+
+    @Autowired
+    private QuestionRepository activityRepository;
+
+    /**
+     * Evalúa la respuesta del usuario y calcula los braincoins ganados.
+     * 
+     * @param responseDto el DTO con los datos de la respuesta del usuario
+     * @return el DTO actualizado con el resultado de la evaluación
+     */
+    public ActivityAnswerDto evaluateUserResponse(ActivityAnswerDto responseDto) {
+        // Recupera la actividad de la base de datos usando el ID de la pregunta
+        Activity activity = activityRepository.findByQuestion(responseDto.getQuestion());
+        if (activity == null) {
+            throw new IllegalArgumentException("Actividad no encontrada");
+        }
+
+        // Verifica si la respuesta seleccionada por el usuario es correcta
+        boolean isCorrect = activity.getCorrectAnswer().equals(responseDto.getSelectedAnswer());
+
+        // Calcula los braincoins basados en la precisión y el tiempo de respuesta
+        int braincoin = calculateBraincoins(isCorrect, responseDto.getResponseTime());
+        responseDto.setBraincoin(braincoin);
+
+        // Retorna el DTO actualizado con los datos de la evaluación
+        return responseDto;
+    }
+
+
+    /**
+     * Calcula los braincoins ganados en función de si la respuesta es correcta y el tiempo de respuesta.
+     * 
+     * @param isCorrect indica si la respuesta del usuario fue correcta
+     * @param responseTime el tiempo que el usuario tardó en responder (en milisegundos)
+     * @return el número de braincoins ganados
+     */
+    private int calculateBraincoins(boolean isCorrect, Long responseTime) {
+        int baseCoins = isCorrect ? 10 : 0; // 10 braincoins si es correcta, 0 si es incorrecta
+        int bonusForTime = (responseTime != null && responseTime < 5000) ? 5 : 0; // Bonificación si responde en menos de 5 segundos
+        return baseCoins + bonusForTime;
+    }
+
+    /**
+     * Recupera una actividad específica usando el ID de la pregunta.
+     * 
+     * @param questionId el ID de la pregunta
+     * @return la actividad encontrada
+     */
+    public Activity getActivityByQuestion(UUID questionId) {
+        return activityRepository.findByQuestion(questionId);
+    }
+}

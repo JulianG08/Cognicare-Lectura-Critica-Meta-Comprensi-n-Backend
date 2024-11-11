@@ -1,0 +1,64 @@
+package co.edu.uco.cognicare.lecturacritica.metacomprension.controller;
+
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import co.edu.uco.cognicare.lecturacritica.metacomprension.dto.RegisterResponseDto;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.model.Activity;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.service.ActivityService;
+
+@RestController
+@RequestMapping("/api/activities")
+@Validated
+public class ActivityController {
+
+    @Autowired
+    private ActivityService activityService;
+    
+    public ActivityController(ActivityService activityService) {
+        this.activityService = activityService;
+    }
+
+    @PostMapping("/submit")
+    public ResponseEntity<String> submitAnswer(@RequestBody RegisterResponseDto userAnswerDto) {
+        boolean isCorrect = activityService.evaluateAnswer(userAnswerDto);
+        if (isCorrect) {
+            return ResponseEntity.ok("Correcto! Has ganado braincoins.");
+        } else {
+            return ResponseEntity.ok("Incorrecto. Intenta de nuevo.");
+        }
+    }
+
+    /**
+     * Endpoint para evaluar la respuesta de un usuario a una actividad de formulario.
+     *
+     * @param responseDto el DTO con los datos de la respuesta del usuario
+     * @return ResponseEntity con el DTO actualizado y estado HTTP
+     */
+    @PostMapping("/evaluate")
+    public ResponseEntity<RegisterResponseDto> evaluateUserResponse(@RequestBody RegisterResponseDto responseDto) {
+    	RegisterResponseDto evaluatedResponse = activityService.evaluateUserResponse(responseDto);
+        return ResponseEntity.ok(evaluatedResponse);
+    }
+
+    /**
+     * Endpoint para obtener detalles de una actividad específica basada en el ID de la pregunta.
+     *
+     * @param questionId el ID de la pregunta
+     * @return ResponseEntity con los detalles de la actividad
+     */
+    @GetMapping("/{questionId}")
+    public ResponseEntity<Activity> getActivityByQuestion(@PathVariable("questionId") String questionId) {
+        Activity activity = activityService.getActivityByQuestion(UUID.fromString(questionId));
+        return ResponseEntity.ok(activity);
+    }
+}

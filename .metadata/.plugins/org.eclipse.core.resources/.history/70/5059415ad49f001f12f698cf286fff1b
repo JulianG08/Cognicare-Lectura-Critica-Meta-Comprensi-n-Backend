@@ -1,0 +1,77 @@
+package co.edu.uco.cognicare.lecturacritica.metacomprension.service;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import co.edu.uco.cognicare.lecturacritica.metacomprension.dto.ActivityAnswerDto;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.exception.ResourceNotFoundException;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.model.Subquestion;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.repository.SubquestionRepository;
+
+@Service
+public class ActivityService {
+
+	@Autowired
+    private SubquestionRepository subquestionRepository;
+
+    /**
+     * Evalúa la respuesta del usuario comparando la respuesta seleccionada con la correcta.
+     * 
+     * @param activityAnswerDto DTO con los datos de la respuesta del usuario.
+     * @return boolean si la respuesta es correcta o incorrecta.
+     */
+    public boolean evaluateAnswer(ActivityAnswerDto activityAnswerDto) {
+        // Validación de que la respuesta seleccionada no sea vacía
+        if (activityAnswerDto.getSelectedAnswer() == null || activityAnswerDto.getSelectedAnswer().isEmpty()) {
+            throw new IllegalArgumentException("La respuesta seleccionada no puede estar vacía.");
+        }
+
+        // Busca la subpregunta específica a partir del ID de la subpregunta y la pregunta
+        Optional<Subquestion> optionalSubquestion = subquestionRepository.findByIdAndQuestionId(
+                activityAnswerDto.getSubquestionId(), activityAnswerDto.getQuestionId());
+
+        // Si la subpregunta no se encuentra, lanzamos una excepción
+        if (optionalSubquestion.isPresent()) {
+            Subquestion subquestion = optionalSubquestion.get();
+
+            // Compara la respuesta seleccionada con la respuesta correcta
+            boolean isCorrect = subquestion.getCorrectAnswer().equals(activityAnswerDto.getSelectedAnswer());
+
+            // Si la respuesta es correcta, devolvemos true, si es incorrecta, false
+            return isCorrect;
+        } else {
+            // Si no se encuentra la subpregunta, lanzamos una excepción de recurso no encontrado
+            throw new ResourceNotFoundException("Subpregunta no encontrada");
+        }
+    }
+
+    /**
+     * Método para validar si la actividad existe o no. Se podría usar para manejar excepciones en otras partes del sistema.
+     * 
+     * @param activityId El ID de la actividad a buscar.
+     * @return boolean si la actividad existe.
+     */
+    public boolean validateActivityExistence(UUID activityId) {
+        // Si la actividad no existe, lanzamos una excepción
+        if (activityId == null || activityId.toString().isEmpty()) {
+            throw new IllegalArgumentException("ID de actividad no válido.");
+        }
+        // Implementar una consulta para verificar la existencia de la actividad (si es necesario)
+        return true; // Placeholder
+    }
+
+    /**
+     * Método auxiliar para obtener una subpregunta de manera segura, lanzando una excepción si no se encuentra.
+     * 
+     * @param subquestionId El ID de la subpregunta.
+     * @param questionId El ID de la pregunta.
+     * @return Subquestion si la subpregunta existe.
+     */
+    public Subquestion getSubquestionOrThrow(int subquestionId, int questionId) {
+        return subquestionRepository.findByIdAndQuestionId(subquestionId, questionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Subpregunta no encontrada"));
+    }
+}

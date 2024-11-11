@@ -1,0 +1,16 @@
+eclipse.preferences.version=1
+org.springframework.ide.eclipse.boot.wizard.PopularityTracker.data-jpa=1
+org.springframework.ide.eclipse.boot.wizard.PopularityTracker.postgresql=1
+org.springframework.ide.eclipse.boot.wizard.PopularityTracker.web=1
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.artifactId=cognicare-lecturacritica
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.bootVersion=3.3.5
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.description=Modulo para soportar los casos de uso de la variable de Lectura Critica
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.groupId=co.edu.uco.cognicare.lecturacritica
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.javaVersion=23
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.language=java
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.name=Cognicare-LecturaCritica
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.packageName=co.edu.uco.cognicare.lecturacritica.metacomprension
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.packaging=jar
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.type=MAVEN
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.version=0.0.1-SNAPSHOT
+org.springframework.ide.eclipse.boot.wizard.initializr.url=https\://start.spring.io\n

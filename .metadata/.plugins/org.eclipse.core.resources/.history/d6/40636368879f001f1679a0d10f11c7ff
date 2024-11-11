@@ -1,0 +1,94 @@
+package co.edu.uco.cognicare.lecturacritica.metacomprension.dto;
+
+import java.util.UUID;
+
+public class ActivityAnswerDto {
+
+	private UUID id;
+	private UUID activity;
+	private UUID question;
+	private UUID subquestion;
+	private UUID userId;
+	private String selectedAnswer;
+	private int braincoin;
+	private Long responseTime;
+	
+	public ActivityAnswerDto() {
+		this.id = UUID.randomUUID();
+	}
+	
+	public ActivityAnswerDto(UUID id, UUID activity, UUID question, UUID subquestion, UUID userId, String selectedAnswer, int braincoin, Long responseTime) {
+		this.id = UUID.randomUUID();
+		this.activity = activity;
+		this.question = question;
+		this.subquestion = subquestion;
+		this.userId = userId;
+		this.selectedAnswer = selectedAnswer;
+		this.braincoin = braincoin;
+		this.responseTime = responseTime;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+	
+	public UUID getActivity() {
+		return activity;
+	}
+
+	public void setActivity(UUID activity) {
+		this.activity = activity;
+	}
+
+	public UUID getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(UUID question) {
+		this.question = question;
+	}
+
+	public UUID getSubquestion() {
+		return subquestion;
+	}
+
+	public void setSubquestion(UUID subquestion) {
+		this.subquestion = subquestion;
+	}
+	
+	public UUID getUserId() {
+		return userId;
+	}
+
+	public void setUserId(UUID userId) {
+		this.userId = userId;
+	}
+
+	public String getSelectedAnswer() {
+		return selectedAnswer;
+	}
+
+	public void setSelectedAnswer(String selectedAnswer) {
+		this.selectedAnswer = selectedAnswer;
+	}
+
+	public int getBraincoin() {
+		return braincoin;
+	}
+
+	public void setBraincoin(int braincoin) {
+		this.braincoin = braincoin;
+	}
+
+	public Long getResponseTime() {
+		return responseTime;
+	}
+
+	public void setResponseTime(Long responseTime) {
+		this.responseTime = responseTime;
+	}
+}

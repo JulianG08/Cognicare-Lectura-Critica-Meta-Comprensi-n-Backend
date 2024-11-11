@@ -1,0 +1,12 @@
+package co.edu.uco.cognicare.lecturacritica.metacomprension.repository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import co.edu.uco.cognicare.lecturacritica.metacomprension.model.Subquestion;
+
+public interface SubquestionRepository extends JpaRepository<Subquestion, UUID> {
+    Optional<Subquestion> findByIdAndQuestionId(UUID subquestionId, UUID questionId);
+}
