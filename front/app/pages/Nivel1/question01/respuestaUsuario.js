@@ -1,7 +1,7 @@
-// Configuración del temporizador
 let startTime;
 let timeLimit;
 let currentDisplayedTime;
+let countdown; // Se mueve fuera de la función para poder acceder desde otros lugares
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("questionForm");
@@ -33,8 +33,10 @@ function startTimer(sublevel_id, form) {
     currentDisplayedTime = timeLimit;
     const timerDisplay = document.getElementById("timer");
 
-    const countdown = setInterval(() => {
-        currentDisplayedTime--;
+    countdown = setInterval(() => {
+        const now = new Date();
+        const elapsedTime = Math.floor((now - startTime) / 1000);
+        currentDisplayedTime = timeLimit - elapsedTime;
         timerDisplay.textContent = currentDisplayedTime;
 
         if (currentDisplayedTime <= 0) {
@@ -50,6 +52,22 @@ function startTimer(sublevel_id, form) {
         const selectedOption = form.querySelector('input[name="option"]:checked');
         if (!selectedOption) {
             alert("Selecciona una opción antes de continuar.");
+            actualTime = timeLimit - currentDisplayedTime;
+            
+            // Reanudar el temporizador después de que el usuario cierre la alerta
+            startTime = new Date(new Date().getTime() - (timeLimit - currentDisplayedTime) * 1000);
+            countdown = setInterval(() => {
+                const now = new Date();
+                const elapsedTime = Math.floor((now - startTime) / 1000);
+                currentDisplayedTime = timeLimit - elapsedTime;
+                timerDisplay.textContent = currentDisplayedTime;
+
+                if (currentDisplayedTime <= 0) {
+                    clearInterval(countdown);
+                    submitTimeoutResponse(form, sublevel_id);
+                }
+            }, 1000);
+
             return;
         }
 
@@ -95,7 +113,7 @@ async function submitResponse(form, sublevel_id, answer) {
 }
 
 async function sendAnswerToServer(answer, timeTaken, sublevel_id, question_id) {
-    const response = await fetch("/guardarRespuesta", {
+    const response = await fetch("/saveAnswers", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

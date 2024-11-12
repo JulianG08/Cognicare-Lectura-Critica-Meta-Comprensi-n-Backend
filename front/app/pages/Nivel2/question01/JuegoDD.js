@@ -1,17 +1,60 @@
-let startTime = new Date();
+// Configuración del temporizador
+let startTime;
+let timeLimit;
+let currentDisplayedTime;
 
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("questionForm");
+    const sublevel_id = parseInt(document.getElementById("sublevel_id").value);
+
+    // Asignar tiempo límite basado en el subnivel
+    setTimeLimit(sublevel_id);
+
+    // Inicia el temporizador de cuenta regresiva
+    startTimer();
+});
+
+function setTimeLimit(sublevel_id) {
+    switch (sublevel_id) {
+        case 3:
+            timeLimit = 80;
+            break;
+        case 4:
+            timeLimit = 60;
+            break;
+        default:
+            alert("Error: Subnivel no válido.");
+            break;
+    }
+}
+
+function startTimer() {
+    startTime = new Date();
+    currentDisplayedTime = timeLimit;
+    const timerDisplay = document.getElementById("timer");
+
+    const countdown = setInterval(() => {
+        currentDisplayedTime--;
+        timerDisplay.textContent = currentDisplayedTime;
+
+        if (currentDisplayedTime <= 0) {
+            clearInterval(countdown);
+            submitTimeoutResponse();
+        }
+    }, 1000);
+}
+
+// Configuración de arrastrar y soltar
 const draggableItems = document.querySelectorAll('.draggable');
 const dropZones = document.querySelectorAll('.drop-zone');
 const submitBtn = document.getElementById('submit-btn');
 
-// Hacer que los elementos sean arrastrables
 draggableItems.forEach(item => {
     item.addEventListener('dragstart', (e) => {
         e.dataTransfer.setData('text', e.target.id);
     });
 });
 
-// Permitir que las zonas de soltado acepten cualquier elemento arrastrable
 dropZones.forEach(zone => {
     zone.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -19,50 +62,49 @@ dropZones.forEach(zone => {
 
     zone.addEventListener('drop', (e) => {
         e.preventDefault();
-        const id = e.dataTransfer.getData('text');
-        const draggedItem = document.getElementById(id);
+        const draggedId = e.dataTransfer.getData('text');
+        const draggedItem = document.getElementById(draggedId);
 
-        // Si la zona de soltado ya tiene un valor, regresa ese valor al contenedor de palabras
-        if (zone.innerHTML.trim() !== '___') {
-            const previousWord = zone.innerHTML.trim();
-            const previousItem = document.getElementById(previousWord);
-
-            // Muestra de nuevo el elemento anterior en el contenedor
+        // Verifica si la zona de soltado ya tiene un contenido
+        if (!zone.classList.contains('occupied')) {
+            // Oculta el elemento arrastrado y muévelo a la zona de soltado
+            zone.classList.add('occupied');
+            zone.innerText = ''; // Limpia cualquier texto placeholder
+            zone.appendChild(draggedItem);
+            draggedItem.classList.add('hidden');
+        } else {
+            // Si ya tiene una palabra, devuelve el elemento anterior
+            const previousItem = zone.querySelector('.draggable');
             if (previousItem) {
-                previousItem.style.display = 'block';
+                previousItem.classList.remove('hidden');
+                document.getElementById('word-container').appendChild(previousItem);
             }
+            // Coloca el nuevo elemento
+            zone.appendChild(draggedItem);
+            draggedItem.classList.add('hidden');
         }
-
-        // Coloca el nuevo contenido de la palabra arrastrada en la zona de soltado
-        zone.innerHTML = draggedItem.innerHTML;
-        draggedItem.style.display = 'none';  // Oculta la palabra en el área de selección
     });
 });
 
-// Agregar lógica para mostrar las palabras de nuevo en el contenedor
-document.querySelectorAll('.draggable').forEach(draggable => {
-    draggable.addEventListener('click', () => {
-        draggable.style.display = 'block'; // Vuelve a mostrar el elemento arrastrable en el contenedor
-    });
-});
 
 // Evento para guardar resultados al hacer clic en el botón
 submitBtn.addEventListener('click', () => {
     const endTime = new Date();
-    const timeTaken = (endTime - startTime) / 1000; // Tiempo en segundos
+    const timeTaken = (endTime - startTime) / 1000;
     const results = {};
 
     // Recopila las respuestas de cada zona de soltado
     dropZones.forEach(zone => {
-        results[zone.id] = zone.innerHTML.trim();
+        results[zone.id] = zone.innerText.trim();
     });
+    
 
     // Recopila los valores de sublevel_id y question_id
     const sublevel_id = document.getElementById('sublevel_id').value;
     const question_id = document.getElementById('question_id').value;
 
     // Enviar los datos al servidor
-    fetch('/guardarRespuesta', {
+    fetch('/saveAnswers', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -77,8 +119,6 @@ submitBtn.addEventListener('click', () => {
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
-        console.log('sublevel_id:', sublevel_id);
-        console.log('question_id:', question_id);
         
         // Redirección según el valor de sublevel_id
         if (sublevel_id == 3) {
@@ -94,3 +134,41 @@ submitBtn.addEventListener('click', () => {
     });
 });
 
+async function submitTimeoutResponse() {
+    const sublevel_id = document.getElementById("sublevel_id").value;
+    const question_id = document.getElementById("question_id").value;
+    const timeTaken = timeLimit - currentDisplayedTime;
+
+    try {
+        const response = await fetch("/saveAnswers", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                answer: "Tiempo agotado",
+                time_taken: timeTaken,
+                sublevel_id: sublevel_id,
+                question_id: question_id,
+            }),
+        });
+
+        if (response.ok) {
+            alert("Tiempo agotado. Respuesta guardada.");
+            redirectToNextPage(sublevel_id);
+        } else {
+            alert("Hubo un problema al guardar la respuesta.");
+        }
+    } catch (error) {
+        console.error("Error al enviar los datos:", error);
+        alert("No se pudo enviar la respuesta.");
+    }
+}
+
+function redirectToNextPage(sublevel_id) {
+    if (sublevel_id === "3") {
+        window.location.href = "/question04.html";
+    } else if (sublevel_id === "4") {
+        window.location.href = "/introJuego.html";
+    }
+}

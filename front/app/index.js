@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
 //Servicios
-import {getIncompleteSublevel, getTotalSublevels, checkQuestionStatus,guardarRespuesta, checkIfCompletedAnySublevel,checkIfPreviousQuestionCompleted } from './controllers/controllers.js';
+import {getIncompleteSublevel, checkQuestionStatus,saveAnswers, checkIfCompletedAnySublevel,checkIfPreviousQuestionCompleted } from './controllers/controllers.js';
 
 
 //server    
@@ -23,9 +23,8 @@ app.use(express.json());
 //Rutas 
 
 //servicios
-app.get('/getTotalSublevels/:questionId', getTotalSublevels);
 app.post('/checkQuestionStatus', checkQuestionStatus);
-app.post('/guardarRespuesta', guardarRespuesta);
+app.post('/saveAnswers', saveAnswers);
 app.get('/getIncompleteSublevel/:questionId', getIncompleteSublevel);
 app.get('/checkIfCompletedAnySublevel/:questionId', checkIfCompletedAnySublevel);
 app.get('/checkIfPreviousQuestionCompleted/:questionId', checkIfPreviousQuestionCompleted);
@@ -55,8 +54,6 @@ app.get("/question04.html",(req,res)=> res.sendFile(__dirname + "/pages/Nivel2/q
 //CSS
 app.get("/IntoJuego.css",(req,res)=> res.sendFile(__dirname + "/pages/IntroJuego/IntoJuego.css"));
 app.get("/introLevel01.css",(req,res)=> res.sendFile(__dirname + "/pages/Nivel1/introduction/introLevel01.css"));
-app.get("/question01.css",(req,res)=> res.sendFile(__dirname + "/pages/Nivel1/question01/question01.css"));
 app.get("/question02.css",(req,res)=> res.sendFile(__dirname + "/pages/Nivel1/question02/question02.css"));
 app.get("/introLevel02.css",(req,res)=> res.sendFile(__dirname + "/pages/Nivel2/introduction/introLevel02.css"));
-app.get("/question01L1.css",(req,res)=> res.sendFile(__dirname + "/pages/Nivel2/question01/question01.css"));
 app.get("/question02L2.css",(req,res)=> res.sendFile(__dirname + "/pages/Nivel2/question02/question02.css"));

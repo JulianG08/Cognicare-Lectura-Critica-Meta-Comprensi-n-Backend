@@ -1,28 +1,5 @@
 import pool from '../data/connection.js';
 
-async function getTotalSublevels(req, res) {
-    const { questionId } = req.params;
-
-    try {
-        const result = await pool.query(`
-            SELECT COUNT(*) as totalSublevels
-            FROM public.sublevels
-            WHERE question_id = $1
-        `, [questionId]);
-
-        const totalSublevels = parseInt(result.rows[0].totalsublevels, 10);
-
-        if (totalSublevels) {
-            res.json({ totalSublevels });
-        } else {
-            res.status(404).send("No se encontraron subniveles para la pregunta");
-        }
-    } catch (error) {
-        console.error("Error al obtener el total de subniveles:", error);
-        res.status(500).send("Error en la consulta de subniveles");
-    }
-}
-
 async function getIncompleteSublevel(req, res) {
     const { questionId } = req.params;
     const userId = 1;  
@@ -53,7 +30,7 @@ async function getIncompleteSublevel(req, res) {
 
 async function checkQuestionStatus(req, res) {
     const { questionId } = req.body;
-    const userId = 1;  // Este valor debe ser dinámico dependiendo de la sesión del usuario
+    const userId = 1;
 
     try {
         const result = await pool.query(`
@@ -78,8 +55,8 @@ async function checkQuestionStatus(req, res) {
     }
 }
 
-async function guardarRespuesta(req, res) {
-    const userId = 1;  // Este puede venir de la sesión o token del usuario
+async function saveAnswers(req, res) {
+    const userId = 1; 
     const { sublevel_id, time_taken, answer, question_id } = req.body;
 
     try {
@@ -163,4 +140,4 @@ async function checkIfPreviousQuestionCompleted(req, res) {
 }
 
 
-export { getIncompleteSublevel, getTotalSublevels, checkQuestionStatus, guardarRespuesta, checkIfCompletedAnySublevel,checkIfPreviousQuestionCompleted };
+export { getIncompleteSublevel, checkQuestionStatus, saveAnswers, checkIfCompletedAnySublevel,checkIfPreviousQuestionCompleted };

@@ -21,18 +21,20 @@
         </div>
         <input type="hidden" id="sublevel_id" value=4>
         <input type="hidden" id="question_id" value=2>
-        <!-- Palabras arrastrables -->
         <div id="word-container">
             <div class="draggable" id="Troncos" draggable="true">Troncos</div>
             <div class="draggable" id="Resbaladizo" draggable="true">Resbaladizo</div>
             <div class="draggable" id="Empujon" draggable="true">Empujon</div>
             <div class="draggable" id="Afianzados" draggable="true">Afianzados</div>
         </div>
-
-        <!-- Botón para enviar resultados -->
         <button id="submit-btn">Guardar Resultados</button>
     </section>
-
     <script src="/JuegoDD.js"></script>
+    <button class="exit-button" onclick="exitPage()">Salir</button>
+    <script>
+        function exitPage() {
+            window.location.href = "/IntroJuego.html";
+        }
+    </script>
 </body>
 </html>
