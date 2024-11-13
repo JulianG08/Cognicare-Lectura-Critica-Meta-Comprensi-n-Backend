@@ -67,63 +67,54 @@ dropZones.forEach(zone => {
 
         // Verifica si la zona de soltado ya tiene un contenido
         if (!zone.classList.contains('occupied')) {
-            // Oculta el elemento arrastrado y muévelo a la zona de soltado
             zone.classList.add('occupied');
             zone.innerText = ''; // Limpia cualquier texto placeholder
             zone.appendChild(draggedItem);
             draggedItem.classList.add('hidden');
         } else {
-            // Si ya tiene una palabra, devuelve el elemento anterior
             const previousItem = zone.querySelector('.draggable');
             if (previousItem) {
                 previousItem.classList.remove('hidden');
                 document.getElementById('word-container').appendChild(previousItem);
             }
-            // Coloca el nuevo elemento
             zone.appendChild(draggedItem);
             draggedItem.classList.add('hidden');
         }
     });
 });
 
-
 // Evento para guardar resultados al hacer clic en el botón
 submitBtn.addEventListener('click', () => {
     const endTime = new Date();
-    const timeTaken = (endTime - startTime) / 1000;
+    const timeTaken = Math.round((endTime - startTime) / 1000);
     const results = {};
 
-    // Recopila las respuestas de cada zona de soltado
     dropZones.forEach(zone => {
         results[zone.id] = zone.innerText.trim();
     });
     
+    const sublevel_id = parseInt(document.getElementById('sublevel_id').value);
+    const question_id = parseInt(document.getElementById('question_id').value);
 
-    // Recopila los valores de sublevel_id y question_id
-    const sublevel_id = document.getElementById('sublevel_id').value;
-    const question_id = document.getElementById('question_id').value;
-
-    // Enviar los datos al servidor
     fetch('/saveAnswers', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            answer: results,
-            time_taken: timeTaken,
-            sublevel_id: sublevel_id,
-            question_id: question_id,
+            activityId: "a619a174-1d7f-437b-bd30-ffaf4206c2c6",
+            questionId: question_id,
+            subquestionId: sublevel_id,
+            selectedAnswer: Object.values(results).join('-'),
+            responseTime: timeTaken,
         }),
     })
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
-        
-        // Redirección según el valor de sublevel_id
-        if (sublevel_id == 3) {
+        if (sublevel_id === 3) {
             window.location.href = "/question04.html";
-        } else if (sublevel_id == 4) {
+        } else if (sublevel_id === 4) {
             window.location.href = "/introJuego.html";
         } else {
             alert('Error: sublevel_id no válido');
@@ -135,8 +126,8 @@ submitBtn.addEventListener('click', () => {
 });
 
 async function submitTimeoutResponse() {
-    const sublevel_id = document.getElementById("sublevel_id").value;
-    const question_id = document.getElementById("question_id").value;
+    const sublevel_id = parseInt(document.getElementById("sublevel_id").value);
+    const question_id = parseInt(document.getElementById("question_id").value);
     const timeTaken = timeLimit - currentDisplayedTime;
 
     try {
@@ -146,10 +137,11 @@ async function submitTimeoutResponse() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                answer: "Tiempo agotado",
-                time_taken: timeTaken,
-                sublevel_id: sublevel_id,
-                question_id: question_id,
+                activityId: "a619a174-1d7f-437b-bd30-ffaf4206c2c6",
+                questionId: question_id,
+                subquestionId: sublevel_id,
+                selectedAnswer: "Tiempo agotado",
+                responseTime: timeTaken,
             }),
         });
 
@@ -166,9 +158,9 @@ async function submitTimeoutResponse() {
 }
 
 function redirectToNextPage(sublevel_id) {
-    if (sublevel_id === "3") {
+    if (sublevel_id === 3) {
         window.location.href = "/question04.html";
-    } else if (sublevel_id === "4") {
+    } else if (sublevel_id === 4) {
         window.location.href = "/introJuego.html";
     }
 }

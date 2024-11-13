@@ -40,7 +40,7 @@ public class ActivityController {
 //    }
     
     @PostMapping("/submit")
-    public ResponseEntity<String> postAnswer(@RequestBody ActivityAnswerDto activityAnswerDto) {
+    public ResponseEntity<String> submitAnswer(@RequestBody ActivityAnswerDto activityAnswerDto) {
         // Guarda la respuesta en la base de datos
         activityService.submitAnswer(activityAnswerDto);
 		return ResponseEntity.ok(null);

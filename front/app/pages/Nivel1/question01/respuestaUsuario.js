@@ -1,7 +1,7 @@
 let startTime;
 let timeLimit;
 let currentDisplayedTime;
-let countdown; // Se mueve fuera de la función para poder acceder desde otros lugares
+let countdown;
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("questionForm");
@@ -47,13 +47,13 @@ function startTimer(sublevel_id, form) {
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
-        clearInterval(countdown); // Detiene el temporizador
+        clearInterval(countdown);
 
         const selectedOption = form.querySelector('input[name="option"]:checked');
         if (!selectedOption) {
             alert("Selecciona una opción antes de continuar.");
             actualTime = timeLimit - currentDisplayedTime;
-            
+
             // Reanudar el temporizador después de que el usuario cierre la alerta
             startTime = new Date(new Date().getTime() - (timeLimit - currentDisplayedTime) * 1000);
             countdown = setInterval(() => {
@@ -71,17 +71,18 @@ function startTimer(sublevel_id, form) {
             return;
         }
 
-        const answer = selectedOption.value;
-        await submitResponse(form, sublevel_id, answer);
+        const selectedAnswer = selectedOption.value;
+        await submitResponse(form, sublevel_id, selectedAnswer);
     });
 }
 
 async function submitTimeoutResponse(form, sublevel_id) {
-    const question_id = form.querySelector('input[name="question"]').value;
+    const questionId = parseInt(form.querySelector('input[name="question"]').value);
     const timeTaken = timeLimit - currentDisplayedTime;
+    const activityId = "a619a174-1d7f-437b-bd30-ffaf4206c2c6"; // Reemplaza con el valor dinámico si es necesario
 
     try {
-        const response = await sendAnswerToServer("Tiempo agotado", timeTaken, sublevel_id, question_id);
+        const response = await sendAnswerToServer("Tiempo agotado", timeTaken, sublevel_id, questionId, activityId);
         if (response.ok) {
             alert("Tiempo agotado. Respuesta guardada.");
             redirectToNextPage(sublevel_id);
@@ -94,12 +95,13 @@ async function submitTimeoutResponse(form, sublevel_id) {
     }
 }
 
-async function submitResponse(form, sublevel_id, answer) {
-    const question_id = form.querySelector('input[name="question"]').value;
+async function submitResponse(form, sublevel_id, selectedAnswer) {
+    const questionId = parseInt(form.querySelector('input[name="question"]').value);
     const timeTaken = timeLimit - currentDisplayedTime;
+    const activityId = "a619a174-1d7f-437b-bd30-ffaf4206c2c6"; // Reemplaza con el valor dinámico si es necesario
 
     try {
-        const response = await sendAnswerToServer(answer, timeTaken, sublevel_id, question_id);
+        const response = await sendAnswerToServer(selectedAnswer, timeTaken, sublevel_id, questionId, activityId);
         if (response.ok) {
             alert("Respuesta guardada exitosamente.");
             redirectToNextPage(sublevel_id);
@@ -112,13 +114,19 @@ async function submitResponse(form, sublevel_id, answer) {
     }
 }
 
-async function sendAnswerToServer(answer, timeTaken, sublevel_id, question_id) {
+async function sendAnswerToServer(selectedAnswer, responseTime, subquestionId, questionId, activityId) {
     const response = await fetch("/saveAnswers", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ answer, time_taken: timeTaken, sublevel_id, question_id })
+        body: JSON.stringify({ 
+            activityId,         // UUID (string)
+            questionId,         // Integer
+            subquestionId,      // Integer
+            selectedAnswer,     // String
+            responseTime        // Integer
+        })
     });
     return response;
 }

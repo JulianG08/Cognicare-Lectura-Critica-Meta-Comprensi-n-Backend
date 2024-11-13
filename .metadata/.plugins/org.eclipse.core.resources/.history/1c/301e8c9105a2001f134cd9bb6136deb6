@@ -1,0 +1,6 @@
+spring.application.name=Cognicare-LecturaCritica
+spring.datasource.url=jdbc:postgresql://localhost:5432/metacomprension
+#spring.datasource.username=postgres
+#spring.datasource.password=Tokisaki22
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.open-in-view=false
