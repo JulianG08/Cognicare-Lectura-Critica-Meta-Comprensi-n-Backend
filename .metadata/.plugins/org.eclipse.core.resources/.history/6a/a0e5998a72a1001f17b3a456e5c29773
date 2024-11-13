@@ -1,0 +1,35 @@
+package co.edu.uco.cognicare.lecturacritica.metacomprension.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import co.edu.uco.cognicare.lecturacritica.metacomprension.dto.ActivityAnswerDto;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.model.ActivityAnswer;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.repository.ActivityAnswerRepository;
+import co.edu.uco.cognicare.lecturacritica.metacomprension.service.ActivityService;
+
+@Service
+public class ActivityServiceImpl implements ActivityService {
+
+    private final ActivityAnswerRepository activityAnswerRepository;
+
+    public ActivityServiceImpl(ActivityAnswerRepository activityAnswerRepository) {
+        this.activityAnswerRepository = activityAnswerRepository;
+    }
+
+    @Override
+    public boolean evaluateAnswer(ActivityAnswerDto activityAnswerDto) {
+        // Lógica de evaluación de la respuesta
+        return false;
+    }
+
+    public void saveAnswer(ActivityAnswerDto activityAnswerDto) {
+        ActivityAnswer answer = new ActivityAnswer();
+        answer.setActivityId(activityAnswerDto.getActivityId());
+        answer.setQuestionId(activityAnswerDto.getQuestionId());
+        answer.setSubquestionId(activityAnswerDto.getSubquestionId());
+        answer.setSelectedAnswer(activityAnswerDto.getSelectedAnswer());
+        answer.setResponseTime(activityAnswerDto.getResponseTime());
+        
+        activityAnswerRepository.save(answer);
+    }
+}

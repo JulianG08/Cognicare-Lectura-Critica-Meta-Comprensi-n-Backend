@@ -29,14 +29,21 @@ public class ActivityController {
         return ResponseEntity.ok("Test success");
     }
     
+//    @PostMapping("/submit")
+//    public ResponseEntity<String> submitAnswer(@RequestBody ActivityAnswerDto activityAnswerDto) {
+//        boolean isCorrect = activityService.evaluateAnswer(activityAnswerDto);
+//        if (isCorrect) {
+//            return ResponseEntity.ok("Correcto! Has ganado braincoins.");
+//        } else {
+//            return ResponseEntity.ok("Incorrecto. Intenta de nuevo.");
+//        }
+//    }
+    
     @PostMapping("/submit")
-    public ResponseEntity<String> submitAnswer(@RequestBody ActivityAnswerDto activityAnswerDto) {
-        boolean isCorrect = activityService.evaluateAnswer(activityAnswerDto);
-        if (isCorrect) {
-            return ResponseEntity.ok("Correcto! Has ganado braincoins.");
-        } else {
-            return ResponseEntity.ok("Incorrecto. Intenta de nuevo.");
-        }
+    public ResponseEntity<String> postAnswer(@RequestBody ActivityAnswerDto activityAnswerDto) {
+        // Guarda la respuesta en la base de datos
+        activityService.submitAnswer(activityAnswerDto);
+		return ResponseEntity.ok(null);
     }
     
     @PostMapping("/evaluate")

@@ -4,9 +4,9 @@ import pg from 'pg';
 const pool = new pg.Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'metaComprension',
-    password: '0000',
-    port: '5434'
+    database: 'metacomprension',
+    password: 'Tokisaki22',
+    port: '5432'
 });
 
 pool.connect()
